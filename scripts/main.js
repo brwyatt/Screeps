@@ -14,6 +14,18 @@ var desired_upgraders = 1;
 var max_builders = 2;
 
 module.exports.loop = function () {
+    // Memory setup
+    if(Memory.globals == null){
+        Memory.globals = {};
+    }
+    if(Memory.globals.debug_level == null){
+        Memory.globals.debug_level = 1;
+    }
+    if(Memory.status == null){
+        Memory.status = {};
+    }
+    Memory.status.failed_to_spawn = false;
+
     // Memory cleanup
     for(var name in Memory.creeps) {
         if(!Game.creeps[name]){
@@ -21,6 +33,7 @@ module.exports.loop = function () {
             console.log('Clearing non-existing creep memory: ', name);
         }
     }
+
 
     var available_spawners = _.filter(Game.spawns, (spawn) => spawn.spawning == null);
 
@@ -71,6 +84,7 @@ module.exports.loop = function () {
             } else {
                 if(Memory.globals.debug_level >= 3){
                     console.log("Unable to spawn harvester! Error "+name);
+                    Memory.status.failed_to_spawn = true;
                 }
                 break;
             }
@@ -104,6 +118,7 @@ module.exports.loop = function () {
             } else {
                 if(Memory.globals.debug_level >= 3){
                     console.log("Unable to spawn upgrader! Error "+name);
+                    Memory.status.failed_to_spawn = true;
                 }
                 break;
             }
@@ -136,6 +151,7 @@ module.exports.loop = function () {
             } else {
                 if(Memory.globals.debug_level >= 3){
                     console.log("Unable to spawn builder! Error "+name);
+                    Memory.status.failed_to_spawn = true;
                 }
                 break;
             }
