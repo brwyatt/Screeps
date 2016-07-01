@@ -9,8 +9,9 @@ var roleHarvester = {
                 creep.carry.energy == 0) {
             creep.memory.part_timing = false;
             var sources = creep.room.find(FIND_SOURCES);
-            if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0]);
+            var i = creep.name.charCodeAt(0) % sources.length;
+            if(creep.harvest(sources[i]) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(sources[i]);
             }
         }
         else {
@@ -22,8 +23,9 @@ var roleHarvester = {
                     }
             });
             if(targets.length > 0) {
-                if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0]);
+                var i = creep.name.charCodeAt(0) % targets.length;
+                if(creep.transfer(targets[i], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[i]);
                 }
             } else {
                 creep.memory.part_timing = true;
