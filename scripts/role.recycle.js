@@ -11,6 +11,8 @@ var roleRecycle = {
         if(targets.length > 0) {
             if(targets[0].recycleCreep(creep) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(targets[0]);
+            } else {
+                console.log("Recycled "+creep.name+"!");
             }
         }
     }
