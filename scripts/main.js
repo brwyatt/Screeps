@@ -45,7 +45,7 @@ module.exports.loop = function () {
             upgraders.splice(0, 1);
             convert.memory.role = 'harvester';
             harvesters.push(convert);
-            if(Memory.globals.debug_level > 1){
+            if(Memory.globals.debug_level >= 1){
                 console.log("Re-assigned upgrader '"+convert.name+"' to harvester duty!");
             }
             converted_upgraders_to_harvesters = true;
@@ -54,7 +54,7 @@ module.exports.loop = function () {
             builders.splice(0, 1);
             convert.memory.role = 'harvester';
             harvesters.push(convert);
-            if(Memory.globals.debug_level > 1){
+            if(Memory.globals.debug_level >= 1){
                 console.log("Re-assigned builder '"+convert.name+"' to harvester duty!");
             }
             converted_builders_to_harvesters = true;
@@ -64,17 +64,17 @@ module.exports.loop = function () {
             if(typeof name != 'number'){
                 available_spawners.splice(0,1);
                 harvesters.push(Game.creeps[name]);
-                if(Memory.globals.debug_level > 1){
+                if(Memory.globals.debug_level >= 1){
                     console.log("Spawning "+name+" as harvester!");
                 }
             } else {
-                if(Memory.globals.debug_level > 3){
+                if(Memory.globals.debug_level >= 3){
                     console.log("Unable to spawn harvester! Error "+name);
                 }
                 break;
             }
         } else {
-            if(Memory.globals.debug_level > 3){
+            if(Memory.globals.debug_level >= 3){
                 console.log("Unable to satisfy harvesting needs!");
             }
             break;
@@ -88,7 +88,7 @@ module.exports.loop = function () {
             harvesters.splice(0, 1);
             convert.memory.role = 'upgrader';
             upgraders.push(convert);
-            if(Memory.globals.debug_level > 1){
+            if(Memory.globals.debug_level >= 1){
                 console.log("Re-assigned harvester '"+convert.name+"' to upgrader duty!");
             }
         } else if(available_spawners.length > 0) {
@@ -97,17 +97,17 @@ module.exports.loop = function () {
             if(typeof name != 'number'){
                 available_spawners.splice(0,1);
                 upgraders.push(Game.creeps[name]);
-                if(Memory.globals.debug_level > 1){
+                if(Memory.globals.debug_level >= 1){
                     console.log("Spawning "+name+" as upgrader!");
                 }
             } else {
-                if(Memory.globals.debug_level > 3){
+                if(Memory.globals.debug_level >= 3){
                     console.log("Unable to spawn upgrader! Error "+name);
                 }
                 break;
             }
         } else {
-            if(Memory.globals.debug_level > 3){
+            if(Memory.globals.debug_level >= 3){
                 console.log("Unable to satisfy upgrade needs!");
             }
             break;
@@ -120,7 +120,7 @@ module.exports.loop = function () {
             harvesters.splice(0, 1);
             convert.memory.role = 'builder';
             builders.push(convert);
-            if(Memory.globals.debug_level > 1){
+            if(Memory.globals.debug_level >= 1){
                 console.log("Re-assigned harvester '"+convert.name+"' to builder duty!");
             }
         } else if(available_spawners.length > 0) {
@@ -129,17 +129,17 @@ module.exports.loop = function () {
             if(typeof name != 'number'){
                 available_spawners.splice(0,1);
                 builders.push(Game.creeps[name]);
-                if(Memory.globals.debug_level > 1){
+                if(Memory.globals.debug_level >= 1){
                     console.log("Spawning "+name+" as builder!");
                 }
             } else {
-                if(Memory.globals.debug_level > 3){
+                if(Memory.globals.debug_level >= 3){
                     console.log("Unable to spawn builder! Error "+name);
                 }
                 break;
             }
         } else {
-            if(Memory.globals.debug_level > 3){
+            if(Memory.globals.debug_level >= 3){
                 console.log("Unable to satisfy build needs!");
             }
             break;
@@ -153,7 +153,7 @@ module.exports.loop = function () {
         var recycle = harvesters[0];
         harvesters.splice(0, 1);
         recycle.memory.role = 'recycle';
-        if(Memory.globals.debug_level > 1){
+        if(Memory.globals.debug_level >= 1){
             console.log("Too many harvesters, recycling '"+recycle.name+"'!");
         }
     }
@@ -161,7 +161,7 @@ module.exports.loop = function () {
         var recycle = upgraders[0];
         upgraders.splice(0, 1);
         recycle.memory.role = 'recycle';
-        if(Memory.globals.debug_level > 1){
+        if(Memory.globals.debug_level >= 1){
             console.log("Too many upgraders, recycling '"+recycle.name+"'!");
         }
     }
@@ -169,7 +169,7 @@ module.exports.loop = function () {
         var recycle = builders[0];
         builders.splice(0, 1);
         recycle.memory.role = 'recycle';
-        if(Memory.globals.debug_level > 1){
+        if(Memory.globals.debug_level >= 1){
             console.log("Too many builders, recycling '"+recycle.name+"'!");
         }
     }
