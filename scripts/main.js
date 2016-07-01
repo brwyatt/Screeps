@@ -28,7 +28,8 @@ module.exports.loop = function () {
     var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
     var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
 
-    var needed_builders = _.values(Game.spawns)[0].room.find(FIND_CONSTRUCTION_SITES).length;
+    var construction_sites = _.values(Game.spawns)[0].room.find(FIND_CONSTRUCTION_SITES).length;
+    var needed_builders = construction_sites;
     if(!isNaN(builders.length)){
         needed_builders -= builders.length;
     }
@@ -165,7 +166,7 @@ module.exports.loop = function () {
             console.log("Too many upgraders, recycling '"+recycle.name+"'!");
         }
     }
-    while(builders.length > needed_builders){
+    while(builders.length > construction_sites){
         var recycle = builders[0];
         builders.splice(0, 1);
         recycle.memory.role = 'recycle';
