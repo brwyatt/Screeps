@@ -28,7 +28,10 @@ module.exports.loop = function () {
     var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
     var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
 
-    var needed_builders = _.values(Game.spawns)[0].room.find(FIND_CONSTRUCTION_SITES) - builders.lenth;
+    var needed_builders = _.values(Game.spawns)[0].room.find(FIND_CONSTRUCTION_SITES).length;
+    if(!isNaN(builders.length)){
+        needed_builders -= builders.length;
+    }
 
     var converted_builders_to_harvesters = false;
     var converted_upgraders_to_harvesters = false;
