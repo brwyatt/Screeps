@@ -96,7 +96,7 @@ module.exports.loop = function () {
         }
     }
     // Create Builders
-    while(needed_builders > 0){
+    while(needed_builders > 0 && builders.length < max_builders){
         if(!converted_builders_to_harvesters && harvesters.length > min_harvesters){
             var convert = harvesters[0];
             harvesters.splice(0, 1);
