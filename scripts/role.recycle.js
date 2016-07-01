@@ -12,7 +12,9 @@ var roleRecycle = {
             if(targets[0].recycleCreep(creep) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(targets[0]);
             } else {
-                console.log("Recycled "+creep.name+"!");
+                if(Memory.globals.debug_level > 1){
+                    console.log("Recycled "+creep.name+"!");
+                }
             }
         }
     }
