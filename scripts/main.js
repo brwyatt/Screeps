@@ -216,7 +216,7 @@ module.exports.loop = function () {
     }
 
     // Create Repairers
-    while(needed_repairers > 0 && repairers.length < Memory.globals.repairers.max){
+    while((needed_repairers > 0 || repairers.length < Memory.globals.repairers.min) && repairers.length < Memory.globals.repairers.max){
         if(!converted_repairers_to_harvesters && harvesters.length > Memory.globals.harvesters.min){
             var convert = harvesters[0];
             harvesters.splice(0, 1);
