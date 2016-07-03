@@ -1,6 +1,7 @@
 var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
+var roleRepairer = require('role.repairer');
 var roleRecycle = require('role.recycle');
 
 var standard_worker = [ WORK, CARRY, MOVE ];
