@@ -78,7 +78,7 @@ module.exports.loop = function () {
         needed_builders -= builders.length;
     }
 
-    var damaged_structures = creep.room.find(FIND_MY_STRUCTURES,{
+    var damaged_structures = _.values(Game.spawns)[0].room.find(FIND_MY_STRUCTURES,{
         filter: (structure) => {
             return (structure.hitsMax - structure.hits) > 0;
         }
