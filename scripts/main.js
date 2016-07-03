@@ -41,6 +41,16 @@ module.exports.loop = function () {
         Memory.globals.builders.max = 2;
     }
 
+    if(Memory.globals.repairers == null){
+        Memory.globals.repairers = {};
+    }
+    if(Memory.globals.repairers.max == null){
+        Memory.globals.repairers.max = 4;
+    }
+    if(Memory.globals.repairers.min == null){
+        Memory.globals.repairers.min = 1;
+    }
+
     if(Memory.status == null){
         Memory.status = {};
     }
@@ -60,6 +70,7 @@ module.exports.loop = function () {
     var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
     var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
     var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
+    var repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
 
     var construction_sites = _.values(Game.spawns)[0].room.find(FIND_CONSTRUCTION_SITES).length;
     var needed_builders = construction_sites;
@@ -67,8 +78,19 @@ module.exports.loop = function () {
         needed_builders -= builders.length;
     }
 
+    var damaged_structures = creep.room.find(FIND_MY_STRUCTURES,{
+        filter: (structure) => {
+            return (structure.hitsMax - structure.hits) > 0;
+        }
+    }).length;
+    var needed_repairers = damaged_structures / 2;
+    if(!isNaN(repairers.length)){
+        needed_repairers -= repairers.length;
+    }
+
     var converted_builders_to_harvesters = false;
     var converted_upgraders_to_harvesters = false;
+    var converted_repairers_to_harvesters = false;
 
     // CREATE WORKERS
 
@@ -92,6 +114,15 @@ module.exports.loop = function () {
                 console.log("Re-assigned builder '"+convert.name+"' to harvester duty!");
             }
             converted_builders_to_harvesters = true;
+        } else if (needed_repairers < 0 && repairers.length > Memory.globals.repairers.min){
+            var convert = repairers[0];
+            repairers.splice(0,1);
+            convert.memory.role = 'harvester';
+            harvesters.push(convert);
+            if(Memory.globals.debug_level >= 1){
+                console.log("Re-assigned repairer '"+convert.name+"' to harvester duty!");
+            }
+            converted_repairers_to_harvesters = true;
         } else if (available_spawners.length > 0) {
             var name = available_spawners[0].createCreep(standard_worker, null,
                     {'role': 'harvester'});
@@ -184,6 +215,41 @@ module.exports.loop = function () {
         needed_builders--;
     }
 
+    // Create Repairers
+    while(needed_repairers > 0 && repairers.length < Memory.globals.repairers.max){
+        if(!converted_repairers_to_harvesters && harvesters.length > Memory.globals.harvesters.min){
+            var convert = harvesters[0];
+            harvesters.splice(0, 1);
+            convert.memory.role = 'repairer';
+            repairers.push(convert);
+            if(Memory.globals.debug_level >= 1){
+                console.log("Re-assigned harvester '"+convert.name+"' to repairer duty!");
+            }
+        } else if(available_spawners.length > 0) {
+            var name = available_spawners[0].createCreep(standard_worker, null,
+                    {'role': 'repairer'});
+            if(typeof name != 'number'){
+                available_spawners.splice(0,1);
+                repairers.push(Game.creeps[name]);
+                if(Memory.globals.debug_debug_level >= 1){
+                    console.log("Spawning "+name+" as repairer!");
+                }
+            } else {
+                if(Memory.globals.debug_level >= 3){
+                    console.log("Unable to spawn repairer!");
+                    Memory.status.failed_to_spawn = true;
+                }
+                break;
+            }
+        } else {
+            if(Memory.globals.debug_level >= 3){
+                console.log("Unable to satisfy repair needs!");
+            }
+            break;
+        }
+        needed_repairers--;
+    }
+
     // DELETE SURPLUS WORKERS
 
     while(harvesters.length > Memory.globals.harvesters.max){
@@ -210,6 +276,14 @@ module.exports.loop = function () {
             console.log("Too many builders, recycling '"+recycle.name+"'!");
         }
     }
+    while(repairers.length > Memory.globals.repairers.min && repairers.length > (damaged_structures / 2)){
+        var recycle = repairers[0];
+        repairers.splice(0, 1);
+        recycle.memory.role = 'recycle';
+        if(Memory.globals.debug_level >= 1){
+            console.log("Too many repairers, recycling '"+recycle.name+"'!");
+        }
+    }
 
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
@@ -219,6 +293,8 @@ module.exports.loop = function () {
             roleUpgrader.run(creep);
         } else if(creep.memory.role == 'builder') {
             roleBuilder.run(creep);
+        } else if(creep.memory.role == 'repairer') {
+            roleRepairer.run(creep);
         } else if (creep.memory.role == 'recycle') {
             roleRecycle.run(creep);
         } else {
