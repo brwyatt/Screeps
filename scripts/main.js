@@ -55,7 +55,7 @@ module.exports.loop = function () {
     if(Memory.status == null){
         Memory.status = {};
     }
-    Memory.status.failed_to_spawn = false;
+    var failed_to_spawn = false;
 
     // Memory cleanup
     for(var name in Memory.creeps) {
@@ -136,7 +136,7 @@ module.exports.loop = function () {
             } else {
                 if(Memory.globals.debug_level >= 3){
                     console.log("Unable to spawn harvester! Error "+name);
-                    Memory.status.failed_to_spawn = true;
+                    failed_to_spawn = true;
                 }
                 break;
             }
@@ -170,7 +170,7 @@ module.exports.loop = function () {
             } else {
                 if(Memory.globals.debug_level >= 3){
                     console.log("Unable to spawn upgrader! Error "+name);
-                    Memory.status.failed_to_spawn = true;
+                    failed_to_spawn = true;
                 }
                 break;
             }
@@ -203,7 +203,7 @@ module.exports.loop = function () {
             } else {
                 if(Memory.globals.debug_level >= 3){
                     console.log("Unable to spawn builder! Error "+name);
-                    Memory.status.failed_to_spawn = true;
+                    failed_to_spawn = true;
                 }
                 break;
             }
@@ -238,7 +238,7 @@ module.exports.loop = function () {
             } else {
                 if(Memory.globals.debug_level >= 3){
                     console.log("Unable to spawn repairer!");
-                    Memory.status.failed_to_spawn = true;
+                    failed_to_spawn = true;
                 }
                 break;
             }
@@ -250,6 +250,8 @@ module.exports.loop = function () {
         }
         needed_repairers--;
     }
+
+    Memory.status.failed_to_spawn = failed_to_spawn;
 
     // DELETE SURPLUS WORKERS
 
