@@ -5,14 +5,6 @@ var roleRecycle = require('role.recycle');
 
 var standard_worker = [ WORK, CARRY, MOVE ];
 
-var min_harvesters = 2;
-var desired_harvesters = 3;
-var max_harvesters = 4;
-
-var desired_upgraders = 1;
-
-var max_builders = 2;
-
 module.exports.loop = function () {
     // Memory setup
     if(Memory.globals == null){
@@ -21,6 +13,34 @@ module.exports.loop = function () {
     if(Memory.globals.debug_level == null){
         Memory.globals.debug_level = 1;
     }
+
+    if(Memory.globals.harvesters == null){
+        Memory.globals.harvesters = {};
+    }
+    if(Memory.globals.harvesters.min == null){
+        Memory.globals.harvesters.min = 2;
+    }
+    if(Memory.globals.harvesters.desired == null){
+        Memory.globals.harvesters.desired = 3;
+    }
+    if(Memory.globals.harvesters.max == null){
+        Memory.globals.harvesters.max = 4;
+    }
+
+    if(Memory.globals.upgraders == null){
+        Memory.globals.upgraders = {};
+    }
+    if(Memory.globals.upgraders.desired == null){
+        Memory.globals.upgraders.desired = 1;
+    }
+
+    if(Memory.globals.builders == null){
+        Memory.globals.builders = {};
+    }
+    if(Memory.globals.builders.max == null){
+        Memory.globals.builders.max = 2;
+    }
+
     if(Memory.status == null){
         Memory.status = {};
     }
@@ -53,8 +73,8 @@ module.exports.loop = function () {
     // CREATE WORKERS
 
     // Create Harvesters
-    while(harvesters.length < desired_harvesters){
-        if(upgraders.length > desired_upgraders){
+    while(harvesters.length < Memory.globals.harvesters.desired){
+        if(upgraders.length > Memory.globals.upgraders.desired){
             var convert = upgraders[0];
             upgraders.splice(0, 1);
             convert.memory.role = 'harvester';
@@ -97,8 +117,8 @@ module.exports.loop = function () {
     }
 
     // Create Upgraders
-    while(upgraders.length < desired_upgraders){
-        if(!converted_upgraders_to_harvesters && harvesters.length > min_harvesters){
+    while(upgraders.length < Memory.globals.upgraders.desired){
+        if(!converted_upgraders_to_harvesters && harvesters.length > Memory.globals.harvesters.min){
             var convert = harvesters[0];
             harvesters.splice(0, 1);
             convert.memory.role = 'upgrader';
@@ -130,8 +150,8 @@ module.exports.loop = function () {
         }
     }
     // Create Builders
-    while(needed_builders > 0 && builders.length < max_builders){
-        if(!converted_builders_to_harvesters && harvesters.length > min_harvesters){
+    while(needed_builders > 0 && builders.length < Memory.globals.builders.max){
+        if(!converted_builders_to_harvesters && harvesters.length > Memory.globals.harvesters.min){
             var convert = harvesters[0];
             harvesters.splice(0, 1);
             convert.memory.role = 'builder';
@@ -166,7 +186,7 @@ module.exports.loop = function () {
 
     // DELETE SURPLUS WORKERS
 
-    while(harvesters.length > max_harvesters){
+    while(harvesters.length > Memory.globals.harvesters.max){
         var recycle = harvesters[0];
         harvesters.splice(0, 1);
         recycle.memory.role = 'recycle';
@@ -174,7 +194,7 @@ module.exports.loop = function () {
             console.log("Too many harvesters, recycling '"+recycle.name+"'!");
         }
     }
-    while(upgraders.length > desired_upgraders){
+    while(upgraders.length > Memory.globals.upgraders.desired){
         var recycle = upgraders[0];
         upgraders.splice(0, 1);
         recycle.memory.role = 'recycle';
