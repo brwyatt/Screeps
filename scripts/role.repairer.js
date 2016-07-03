@@ -16,8 +16,8 @@ var roleRepairer = {
                     return (structure.hitsMax - structure.hits) > 0;
                 }
             });
-            var i = creep.name.charCodeAt(0) % targets.length;
             if(targets.length) {
+                var i = creep.name.charCodeAt(0) % targets.length;
                 if(creep.repair(targets[i]) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(targets[i]);
                 }
@@ -25,6 +25,7 @@ var roleRepairer = {
 	    }
 	    else {
 	        var sources = creep.room.find(FIND_SOURCES);
+            var i = creep.name.charCodeAt(0) % targets.length;
             if(creep.harvest(sources[i]) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(sources[i]);
             }
