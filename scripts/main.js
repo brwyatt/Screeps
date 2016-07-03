@@ -277,7 +277,7 @@ module.exports.loop = function () {
             console.log("Too many builders, recycling '"+recycle.name+"'!");
         }
     }
-    while(repairers.length > Memory.globals.repairers.min && repairers.length > (damaged_structures / 2)){
+    while(repairers.length > Math.max(Memory.globals.repairers.min, (damaged_structures / 2))){
         var recycle = repairers[0];
         repairers.splice(0, 1);
         recycle.memory.role = 'recycle';
