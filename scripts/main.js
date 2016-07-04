@@ -4,7 +4,7 @@ var roleBuilder = require('role.builder');
 var roleRepairer = require('role.repairer');
 var roleRecycle = require('role.recycle');
 
-var standard_worker = [ WORK, CARRY, MOVE ];
+var standard_worker = [ WORK, WORK, CARRY, MOVE, MOVE ];
 
 module.exports.loop = function () {
     // Memory setup
