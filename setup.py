@@ -17,7 +17,7 @@ setup(
     include_package_data=False,
     entry_points={
         'console_scripts': [
-            'screeps_build = buildtools.build:main',
+            'screeps_build = screeps.buildtools.build:main',
         ]
     },
     install_requires=[
