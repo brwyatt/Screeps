@@ -11,9 +11,9 @@ import base64
 import os
 import shutil
 
-import file_expander
+from .file_expander import FileExpander
 
-transcrypt_arguments = ['-n', '-p', '.none']
+transcrypt_arguments = ['-p', '.none', '-e', '6']
 transcrypt_dirty_args = transcrypt_arguments + []
 transcrypt_clean_args = transcrypt_arguments + ['-b']
 
@@ -134,7 +134,7 @@ def run_transcrypt(config):
     """
     transcrypt_executable = config.transcrypt_executable()
 
-    source_main = os.path.join(config.source_dir, 'main.py')
+    source_main = os.path.join(config.source_dir, 'screeps/main.py')
 
     if config.clean_build:
         cmd_args = transcrypt_clean_args
@@ -167,7 +167,7 @@ def copy_artifacts(config):
         else:
             raise
 
-    shutil.copyfile(os.path.join(config.source_dir, '__javascript__', 'main.js'),
+    shutil.copyfile(os.path.join(config.source_dir, 'screeps', '__javascript__', 'main.min.js'),
                     os.path.join(dist_directory, 'main.js'))
 
     js_directory = os.path.join(config.base_dir, 'js_files')
@@ -309,8 +309,7 @@ def install_env(config):
 
 def main(args=None):
     parser = ArgumentParser()
-    parser.add_argument("-b", "--base-dir", type=str,
-                        default=os.path.dirname(os.path.abspath(__file__)),
+    parser.add_argument("-b", "--base-dir", type=str, default=os.getcwd(),
                         help="base dir for relative paths")
     parser.add_argument("-c", "--config-file", type=str, default='config.json',
                         help="file to load configuration from")
@@ -334,7 +333,7 @@ def main(args=None):
     install_env(config)
 
     if config.flatten:
-        expander_control = file_expander.FileExpander(args.base_dir)
+        expander_control = FileExpander(args.base_dir)
         expander_control.expand_files()
 
     if args.build:
