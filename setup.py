@@ -17,8 +17,12 @@ setup(
     include_package_data=False,
     entry_points={
         'console_scripts': [
-            'screeps_build = screeps.buildtools.build:main',
-        ]
+            'screeps = screeps:main',
+            'screeps_build_legacy = screeps.buildtools.legacy_build:main',
+        ],
+        'screeps_subcommands': [
+            'build = screeps.buildtools.build:setup_subparser',
+        ],
     },
     install_requires=[
         'Transcrypt>=3.5.0,<3.7.0',

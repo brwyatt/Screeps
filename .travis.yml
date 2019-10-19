@@ -5,12 +5,12 @@ before_install:
   - "openssl aes-256-cbc -K $encrypted_1ffca1d148a3_key -iv $encrypted_1ffca1d148a3_iv -in config.json.enc -out config.json -d"
 install:
   - pip install .
-  - screeps_build --build --no-upload
+  - screeps_build_legacy --build --no-upload
 script: /bin/true
 deploy:
   provider: script
   skip_cleanup: true
-  script: screeps_build --no-build --upload
+  script: screeps_build_legacy --no-build --upload
 env:
   global:
     secure: Ku7hEuMdI7gTq45kNynE7pvG1TiDRnjTLr9BeJSisuiEkYPoH4U8npY084PTkwGTFpxRpgKR44YoqbVoD1fImz00VvNWpp/PwQhRCj12k5fn1IE/CASJ3GEZFWjz2eoH9N0ZJEqWlFeF3BhkrzOgoT7anTvJRAWTuDimnl0ZczYsM61X3Gy7sGqyhrRZDwbjyj32NIHSwR1UuWE/0RRcYkQmxKvyIJUiQR9k6NjV5DSDYgAvjWLaPBwRZZ3ncjzihGbLTGRFIDfeJUSO1hC05VbAYwHs4rvmy5CCYNb+2FkMGIIAUwhXL85aI4kiLFUT03hIwrsZ7MY9gJwFvC4tL0NPCEcc6H8chAQXykdgLgy8Gnx/Kms66m1i+Gt8RFPgGvvyL+VNSamlzCFkeh80QrddZhSM5IApkSQvaPPthOgIbeFb93/d7wwTAekZlQ79uvULsXdEh/PAcvktIv55HIq+Fag23E/AGu1P+L7WRGujGa4FdNAQdJxS4X6dJ8aQVFxqnxgvh4ri9+8yy0mPZd3A9bBOZZ5hzVo0+Jc6iFY8KXJpG7ZtBNVvu7gIrGWnbgqqp/NgvTIduUfqqmx4VMRjcFwEBt6u0V73mQLZdFn+ek9tLYq/w9wbi2WQsUGErPRf4Qe7poWy9Lct/T6EHvCiuwhmCI+kL/u5JyVF5+o=
