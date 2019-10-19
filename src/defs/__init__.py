@@ -17,9 +17,6 @@ A few notes:
   for type hinting.
 """
 
-# noinspection PyUnboundLocalVariable,PyUnresolvedReferences
-__pragma__('skip')
-
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -28,6 +25,9 @@ if TYPE_CHECKING:
 from .constants import *
 from .classes import *
 from .transcrypt import *
+
+# noinspection PyUnboundLocalVariable,PyUnresolvedReferences
+__pragma__('skip')
 
 # Generated manually using regexes on the sub files
 __all__ = [

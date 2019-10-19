@@ -3,9 +3,8 @@ from typing import Any, Dict, List, Optional, Union
 from .creep import Creep
 # noinspection PyProtectedMember
 from .memory import _Memory
-from .misc_obj import RoomObject
 # noinspection PyProtectedMember
-from .room import Room, RoomPosition, _Owner
+from .room import Room, RoomObject, RoomPosition, _Owner
 
 
 # noinspection PyPep8Naming

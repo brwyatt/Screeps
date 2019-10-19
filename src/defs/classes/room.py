@@ -2,7 +2,6 @@ from typing import Any, Callable, Dict, List, Optional, Type, Union
 
 # noinspection PyProtectedMember
 from .memory import _Memory
-from .misc_obj import RoomObject
 from .structures import StructureController, StructureStorage, StructureTerminal
 from ..transcrypt import Uint8Array
 
@@ -65,58 +64,6 @@ class RoomPosition:
 
     def lookFor(self, _type: str) -> List[RoomObject]:
         pass
-
-
-RoomPosition.prototype = RoomPosition
-
-
-# noinspection PyPep8Naming
-class _Event:
-    """
-    :type event: int
-    :type objectId: str
-    :type data: Dict[str, Any]
-    """
-
-    def __init__(self, event: int, objectId: str, data: Dict[str, Any]) -> None:
-        """
-        WARNING: This constructor is purely for type completion, and does not exist in the game.
-        """
-        self.event = event  # type: int
-        self.objectId = objectId  # type: str
-        self.data = data  # type: Dict[str, Any]
-
-
-class _Owner:
-    """
-    :type username: str
-    """
-
-    def __init__(self, username: str) -> None:
-        """
-        WARNING: This constructor is purely for type completion, and does not exist in the game.
-        """
-        self.username = username
-
-
-class _PathPos:
-    """
-    :type x: int
-    :type y: int
-    :type dx: int
-    :type dy: int
-    :type direction: int
-    """
-
-    def __init__(self, x: int, y: int, dx: int, dy: int, direction: int) -> None:
-        """
-        WARNING: This constructor is purely for type completion, and does not exist in the game.
-        """
-        self.x = x
-        self.y = y
-        self.dx = dx
-        self.dy = dy
-        self.direction = direction
 
 
 # noinspection PyPep8Naming
@@ -217,3 +164,69 @@ class Room:
     def lookForAtArea(self, _type: str, top: int, left: int, bottom: int, right: int, asArray: bool = False) \
             -> Union[List[Dict[str, RoomObject]], Dict[int, Dict[int, Dict[str, RoomObject]]]]:
         pass
+
+
+class RoomObject:
+    """
+    :type pos: RoomPosition
+    :type room: Room
+    """
+
+    def __init__(self, pos: RoomPosition, room: Room) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
+        self.pos = pos
+        self.room = room
+
+
+RoomPosition.prototype = RoomPosition
+
+
+# noinspection PyPep8Naming
+class _Event:
+    """
+    :type event: int
+    :type objectId: str
+    :type data: Dict[str, Any]
+    """
+
+    def __init__(self, event: int, objectId: str, data: Dict[str, Any]) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
+        self.event = event  # type: int
+        self.objectId = objectId  # type: str
+        self.data = data  # type: Dict[str, Any]
+
+
+class _Owner:
+    """
+    :type username: str
+    """
+
+    def __init__(self, username: str) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
+        self.username = username
+
+
+class _PathPos:
+    """
+    :type x: int
+    :type y: int
+    :type dx: int
+    :type dy: int
+    :type direction: int
+    """
+
+    def __init__(self, x: int, y: int, dx: int, dy: int, direction: int) -> None:
+        """
+        WARNING: This constructor is purely for type completion, and does not exist in the game.
+        """
+        self.x = x
+        self.y = y
+        self.dx = dx
+        self.dy = dy
+        self.direction = direction

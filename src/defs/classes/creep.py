@@ -1,7 +1,8 @@
 from typing import Any, ClassVar, Dict, List, Optional, Union
 
 from .memory import _Memory
-from .misc_obj import Mineral, Resource, RoomObject, Source
+from .room import RoomObject
+from .misc_obj import Mineral, Resource, Source
 from .room import Room, RoomPosition, _Owner
 from .structures import ConstructionSite, Structure, StructureController
 

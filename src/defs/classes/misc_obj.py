@@ -2,21 +2,7 @@
 from typing import Optional, Type, Union
 
 from .memory import _Memory
-from .room import Room, RoomPosition
-
-
-class RoomObject:
-    """
-    :type pos: RoomPosition
-    :type room: Room
-    """
-
-    def __init__(self, pos: RoomPosition, room: Room) -> None:
-        """
-        WARNING: This constructor is purely for type completion, and does not exist in the game.
-        """
-        self.pos = pos
-        self.room = room
+from .room import Room, RoomObject, RoomPosition
 
 
 # noinspection PyPep8Naming
