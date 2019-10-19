@@ -110,30 +110,20 @@ class Configuration:
             return os.path.join(self.base_dir, 'src')
 
 
-def load_config(base_dir):
+def load_config(args):
     """
     Loads the configuration from the `config.json` file.
 
     :type base_dir: str
     :rtype: Configuration
     """
-    parser = ArgumentParser()
-    parser.add_argument("-c", "--config-file", type=str, default='config.json',
-                        help="file to load configuration from")
-    parser.add_argument("-d", "--dirty-build", action='store_true',
-                        help="if true, use past built files for files who haven't changed")
-    parser.add_argument("-e", "--expand-files", action='store_true',
-                        help="""Alternative to Transcrypt's -xpath option for \
-                        finding nested modules.  Use this option if Transcrypt \
-                        is unable to import nested .py files""")
-    args = parser.parse_args()
 
-    config_file = os.path.join(base_dir, 'config.json')
+    config_file = os.path.join(args.base_dir, 'config.json')
 
-    with open(os.path.join(base_dir, config_file)) as f:
+    with open(os.path.join(args.base_dir, config_file)) as f:
         config_json = json.load(f)
 
-    return Configuration(base_dir, config_json, clean_build=not args.dirty_build, flatten=args.expand_files)
+    return Configuration(args.base_dir, config_json, clean_build=not args.dirty_build, flatten=args.expand_files)
 
 
 def run_transcrypt(config):
@@ -317,18 +307,42 @@ def install_env(config):
                                 .format(ret, "' '".join(install_args), config.base_dir))
 
 
-def main():
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    config = load_config(base_dir)
+def main(args=None):
+    parser = ArgumentParser()
+    parser.add_argument("-b", "--base-dir", type=str,
+                        default=os.path.dirname(os.path.abspath(__file__)),
+                        help="base dir for relative paths")
+    parser.add_argument("-c", "--config-file", type=str, default='config.json',
+                        help="file to load configuration from")
+    parser.add_argument("-d", "--dirty-build", action='store_true',
+                        help="if true, use past built files for files who haven't changed")
+    parser.add_argument("-e", "--expand-files", action='store_true',
+                        help="""Alternative to Transcrypt's -xpath option for \
+                        finding nested modules.  Use this option if Transcrypt \
+                        is unable to import nested .py files""")
+    parser.add_argument("--build", action='store_true', default=True,
+                        dest='build', help='Enable building of project')
+    parser.add_argument("--no-build", action='store_false', default=True,
+                        dest='build', help='Disable building of project')
+    parser.add_argument("--upload", action='store_true', default=False,
+                        dest='upload', help='Enable uploading of project')
+    parser.add_argument("--no-upload", action='store_false', default=False,
+                        dest='upload', help='Disable uploading of project')
+    args = parser.parse_args()
+
+    config = load_config(args)
     install_env(config)
 
     if config.flatten:
-        expander_control = file_expander.FileExpander(base_dir)
+        expander_control = file_expander.FileExpander(args.base_dir)
         expander_control.expand_files()
 
-    build(config)
-    upload(config)
+    if args.build:
+        build(config)
+
+    if args.upload:
+        upload(config)
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[:1])
